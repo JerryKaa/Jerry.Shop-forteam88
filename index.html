@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>คลังลูกทีม 💖 Jerry.Shop88</title>
+    
+    <meta name="theme-color" content="#86198f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="คลังลูกทีม Jerry.Shop88">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/QxMmTnrS/kd.png">
+    
+    <script>
+        const manifestData = {
+          "name": "คลังลูกทีม Jerry.Shop88",
+          "short_name": "คลังลูกทีม",
+          "start_url": "./index.html",
+          "display": "standalone",
+          "background_color": "#fcf5fc",
+          "theme_color": "#86198f",
+          "icons": [
+            { "src": "https://i.postimg.cc/QxMmTnrS/kd.png", "sizes": "192x192", "type": "image/png" },
+            { "src": "https://i.postimg.cc/QxMmTnrS/kd.png", "sizes": "512x512", "type": "image/png" }
+          ]
+        };
+        const stringManifest = JSON.stringify(manifestData);
+        const blob = new Blob([stringManifest], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(blob);
+        const linkTag = document.createElement('link');
+        linkTag.rel = 'manifest';
+        linkTag.href = manifestURL;
+        document.head.appendChild(linkTag);
+    </script>
+
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #fdf2f8; margin: 0; padding: 15px; color: #333; text-align: center; }
+        h1 { color: #be185d; font-size: 24px; margin-bottom: 5px; }
+        p { color: #9d174d; font-size: 14px; margin-bottom: 20px; }
+        
+        .box-card { background: white; padding: 20px; border-radius: 15px; max-width: 400px; margin: 0 auto 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-left: 5px solid #ec4899; }
+        .box-card input { width: 85%; padding: 15px; border: 1px solid #fbcfe8; border-radius: 10px; font-size: 16px; margin-top: 10px; text-align: center; outline: none; background: #fffafc; }
+        
+        .btn-main { background-color: #ec4899; color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; box-shadow: 0 4px 6px rgba(236,72,153,0.3); margin-top: 10px; }
+        .btn-main:active { transform: scale(0.98); }
+        .btn-secondary { background-color: #8b5cf6; margin-top: 8px; }
+        .btn-cancel { background-color: #6b7280; margin-top: 8px; }
+        
+        .btn-refresh { background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); color: white; border: none; padding: 10px 15px; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(37,99,235,0.2); display: inline-flex; align-items: center; gap: 6px; }
+        .btn-refresh:active { transform: scale(0.95); }
+
+        .btn-line-admin { display: block; background: linear-gradient(135deg, #34d399 0%, #059669 100%); color: white; text-decoration: none; padding: 12px 20px; border-radius: 12px; font-size: 15px; font-weight: bold; text-align: center; margin-top: 10px; box-shadow: 0 4px 6px rgba(5, 150, 105, 0.3); }
+        .banner-other-app { background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%); color: #831843; padding: 15px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        #shopArea, #confirmArea, #historyArea, #successScreen { display: none; }
+        
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; max-width: 900px; margin: auto; padding-bottom: 30px; }
+        .product-card { background: white; padding: 20px; border-radius: 15px; border-top: 5px solid #f472b6; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
+        .product-title { font-size: 20px; font-weight: bold; color: #be185d; margin-bottom: 5px; }
+        .product-price { font-size: 16px; font-weight: bold; color: #ef4444; margin-bottom: 10px; }
+        .stock-count { font-size: 14px; font-weight: bold; color: #10b981; background: #ecfdf5; display: inline-block; padding: 6px 15px; border-radius: 20px; margin-top: 5px; margin-bottom: 15px; }
+        
+        .credentials { background: white; padding: 15px; border-radius: 10px; font-size: 14px; text-align: left; color: #047857; margin-top: 10px; white-space: pre-wrap; word-break: break-all; border: 1px solid #a7f3d0; }
+        .btn-copy-email { background-color: #0ea5e9; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; width: 48%; margin-top: 8px; cursor: pointer; }
+        .btn-copy-pass { background-color: #f59e0b; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; width: 48%; margin-top: 8px; cursor: pointer; }
+        .btn-copy-all { background-color: #10b981; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; }
+        .btn-delete { background-color: #ef4444; color: white; border: none; padding: 8px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 8px; cursor: pointer; }
+        .btn-link-action { display: block; background-color: #3b82f6; color: white; text-decoration: none; padding: 10px; border-radius: 8px; font-weight: bold; text-align: center; margin-top: 10px; }
+        
+        .alert-slip { font-size: 13px; color: #ef4444; font-weight: bold; margin-top: 10px; }
+        .loader { border: 4px solid #fdf2f8; border-top: 4px solid #ec4899; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <h1>🛍️ โกดัง Jerry.Shop88</h1>
+    <p>ระบบเบิกสินค้าพรีเมียม สำหรับทีมงานคนสวย 💖</p>
+    
+    <!-- 💳 บัญชี QR Code โอนเงินอยู่ด้านบนช่องกรอกรหัส -->
+    <div style="text-align: center; margin: 15px 0;" class="box-card">
+       <p id="qrTitle" style="color: #db2777; font-weight: bold; font-size: 14px;">กำลังโหลดบัญชี... ⏳</p>
+       <img id="qrImage" src="" style="width: 100%; max-width: 200px; border-radius: 15px; border: 3px dashed #f472b6; padding: 8px; background: white;">
+       <p class="alert-slip">🚨 โอนเสร็จแล้ว อย่าลืมส่งสลิปให้บอสทางแชท!</p>
+    </div>
+
+    <!-- 🔐 หน้าจอเข้าสู่ระบบ -->
+    <div class="box-card" id="loginBox">
+        <label style="font-weight: bold; color: #db2777; font-size: 15px;">🔐 เข้าสู่ระบบพนักงาน 👇</label>
+        <input type="text" id="teamCodeInput" placeholder="พิมพ์รหัสพนักงานของคุณ" autocomplete="off" />
+        <button class="btn-main" onclick="loginSystem()">🚀 เข้าสู่ระบบ</button>
+        <a href="https://line.me/ti/p/yEDtFL7fzk" target="_blank" class="btn-line-admin">💬 ติดต่อบอส / แจ้งเติมของ</a>
+    </div>
+
+    <!-- 👤 แผงควบคุมหลังล็อกอิน -->
+    <div class="box-card" id="userPanel" style="display: none; border-left-color: #10b981;">
+        <p style="margin: 0; font-size: 15px; color: #047857;">👋 สวัสดีคุณ: <b id="agentDisplayName">---</b></p>
+        <button class="btn-main btn-secondary" onclick="openHistory()">📜 ดูประวัติการเบิกของฉัน</button>
+        <a href="https://line.me/ti/p/yEDtFL7fzk" target="_blank" class="btn-line-admin">💬 ติดต่อบอสเพื่อแจ้งเติมของ</a>
+        <button class="btn-main btn-cancel" onclick="logoutSystem()">🔄 ออกจากระบบ</button>
+    </div>
+
+    <div id="shopArea">
+        <div class="banner-other-app">
+            💡 ต้องการแอปอื่น ๆ หรือแจ้งเติมสต๊อกด่วน?<br>
+            <a href="https://line.me/ti/p/yEDtFL7fzk" target="_blank" style="display: inline-block; background: #059669; color: white; padding: 8px 16px; border-radius: 12px; text-decoration: none; margin-top: 8px; font-size: 13px;">💬 คลิกติดต่อบอสตรงนี้เลย</a>
+        </div>
+
+        <button class="btn-refresh" onclick="manualRefreshStock()">
+            🔄 โหลดสต๊อกล่าสุด (กดเมื่อบอสเติมของแล้ว)
+        </button>
+
+        <div id="loading">
+            <div class="loader"></div>
+            <div style="color: #db2777; font-weight: bold; margin-top: 10px;">กำลังโหลดสต๊อกสินค้า... ⏳</div>
+        </div>
+        <div class="product-grid" id="productList"></div>
+    </div>
+
+    <div class="box-card" id="confirmArea">
+        <h3 style="color: #be185d; margin-top: 0;">⚠️ ยืนยันการเบิกสินค้า</h3>
+        <p style="color: #333; font-size: 15px;" id="confirmText">กำลังโหลด...</p>
+        <button class="btn-main" onclick="executeClaim()">✅ ยืนยันการเบิก</button>
+        <button class="btn-main btn-cancel" onclick="cancelClaim()">❌ ยกเลิก</button>
+    </div>
+
+    <div class="box-card" id="historyArea" style="max-width: 450px;">
+        <h3 style="color: #be185d; margin-top: 0;">📜 ประวัติการเบิกของฉัน</h3>
+        <div id="historyList">กำลังโหลดประวัติ...</div>
+        <button class="btn-main" style="margin-top: 15px;" onclick="closeHistory()">⬅️ กลับไปหน้าหลัก</button>
+    </div>
+
+    <!-- 🎉 หน้าจอแสดงผลข้อมูลบัญชีหลังเบิกสำเร็จ -->
+    <div class="box-card" id="successScreen">
+        <h2 style="color: #10b981; margin-top: 0; font-size: 22px;">🎉 เบิกของสำเร็จ!</h2>
+        <div class="credentials" id="accData"></div>
+        <div style="display: flex; justify-content: space-between;">
+            <button class="btn-copy-email" onclick="copyTextDirect(globalEmail, 'คัดลอกอีเมลสำเร็จ!')">📧 ก๊อปปี้อีเมล</button>
+            <button class="btn-copy-pass" onclick="copyTextDirect(globalPass, 'คัดลอกรหัสผ่านสำเร็จ!')">🔑 ก๊อปปี้รหัส</button>
+        </div>
+        <button class="btn-copy-all" onclick="copyTextDirect(globalFullText, 'คัดลอกทั้งหมดสำเร็จ!')">📋 ก๊อปปี้ข้อความทั้งหมด</button>
+        <a id="successLinkBtn" href="#" target="_blank" class="btn-link-action">🔗 คลิกเปิดลิงก์ใช้งานทันที</a>
+        <button class="btn-main btn-cancel" onclick="backToShop()">⬅️ เบิกของชิ้นอื่นต่อ</button>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbySLdJHFtF9u9hPkC-vd3VXrv0beeFH3CwOqYzDOCHOKO0bByld5Batixz5MOAPzr4JPw/exec";
+        let currentCode = "", selectedAppName = "", selectedBtnId = "";
+        let globalEmail = "", globalPass = "", globalFullText = "";
+
+        function updateQRCode() {
+            const currentHour = new Date().getHours();
+            if (currentHour >= 23 || currentHour < 2) {
+                document.getElementById("qrImage").src = "https://i.ibb.co/5hCFnQjC/X-20260828-155835-0000.png";
+                document.getElementById("qrTitle").innerText = "🌙 บัญชีรอบดึก (23:00-02:00)";
+            } else {
+                document.getElementById("qrImage").src = "https://i.ibb.co/rfH14RGp/IMG-256905021844533.png";
+                document.getElementById("qrTitle").innerText = "☀️ บัญชีหลัก";
+            }
+        }
+
+        window.onload = function() {
+            updateQRCode();
+            const savedCode = localStorage.getItem("jerry_shop_team_code");
+            if (savedCode) {
+                autoLogin(savedCode);
+            }
+        };
+
+        function callAPI(action, data = {}, callback) {
+            fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: action, ...data })
+            })
+            .then(res => res.json())
+            .then(res => callback(res))
+            .catch(err => {
+                console.error(err);
+                alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์");
+            });
+        }
+
+        function loginSystem() {
+            const code = document.getElementById('teamCodeInput').value.trim();
+            if(!code) return alert("ว้าย! กรุณาใส่รหัสพนักงานก่อนค่ะ 💅");
+
+            callAPI("verifyLogin", { code: code }, function(res) {
+                if(res.success) {
+                    currentCode = code;
+                    localStorage.setItem("jerry_shop_team_code", code);
+
+                    document.getElementById('loginBox').style.display = 'none';
+                    document.getElementById('userPanel').style.display = 'block';
+                    document.getElementById('agentDisplayName').innerText = res.agentName;
+                    document.getElementById('shopArea').style.display = 'block';
+                    loadProducts();
+                } else {
+                    alert("❌ " + res.message);
+                }
+            });
+        }
+
+        function autoLogin(code) {
+            callAPI("verifyLogin", { code: code }, function(res) {
+                if(res.success) {
+                    currentCode = code;
+                    document.getElementById('loginBox').style.display = 'none';
+                    document.getElementById('userPanel').style.display = 'block';
+                    document.getElementById('agentDisplayName').innerText = res.agentName;
+                    document.getElementById('shopArea').style.display = 'block';
+                    loadProducts();
+                } else {
+                    localStorage.removeItem("jerry_shop_team_code");
+                }
+            });
+        }
+
+        function logoutSystem() {
+            localStorage.removeItem("jerry_shop_team_code");
+            location.reload();
+        }
+
+        function manualRefreshStock() {
+            loadProducts();
+            alert("✨ รีเฟรชสต๊อกล่าสุดเรียบร้อยแล้วค่ะแม่!");
+        }
+
+        function loadProducts() {
+            document.getElementById('loading').style.display = 'block';
+            callAPI("getProducts", {}, function(res) {
+                document.getElementById('loading').style.display = 'none';
+                const list = document.getElementById('productList');
+                list.innerHTML = "";
+                if(!res.products || res.products.length === 0) {
+                    list.innerHTML = "<p style='color: #ef4444; font-weight: bold;'>😭 สต๊อกเกลี้ยงโกดังเลยแม่!</p>";
+                    return;
+                }
+                res.products.forEach((p, index) => {
+                    const isSoldOut = p.count === 0;
+                    const btnClass = isSoldOut ? "btn-main btn-cancel" : "btn-main";
+                    const btnText = isSoldOut ? "❌ สินค้าหมดเกลี้ยง" : "📦 กดเบิกสินค้านี้";
+                    const btnDisabled = isSoldOut ? "disabled" : "";
+
+                    list.innerHTML += `
+                        <div class="product-card">
+                            <div class="product-title">${p.appName}</div>
+                            <div class="product-price">ราคาเบิก: ${p.price} บาท</div>
+                            <div class="stock-count">✅ ว่าง ${p.count} เครื่อง</div><br>
+                            <button class="${btnClass}" id="btn-${index}" ${btnDisabled} onclick="prepareClaim('${p.appName}', 'btn-${index}')">${btnText}</button>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function prepareClaim(appName, btnId) {
+            selectedAppName = appName;
+            selectedBtnId = btnId;
+            document.getElementById('confirmText').innerText = `คุณต้องการเบิกสินค้า "${appName}" ใช่ไหมคะ?`;
+            document.getElementById('shopArea').style.display = 'none';
+            document.getElementById('confirmArea').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function cancelClaim() {
+            document.getElementById('confirmArea').style.display = 'none';
+            document.getElementById('shopArea').style.display = 'block';
+        }
+
+        function executeClaim() {
+            document.getElementById('confirmArea').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            
+            callAPI("claim", { teamCode: currentCode, appName: selectedAppName }, function(res) {
+                document.getElementById('loading').style.display = 'none';
+                if(res.success) {
+                    document.getElementById('userPanel').style.display = 'none';
+                    document.getElementById('shopArea').style.display = 'none';
+                    document.getElementById('confirmArea').style.display = 'none';
+                    document.getElementById('historyArea').style.display = 'none';
+                    document.getElementById('successScreen').style.display = 'block';
+                    
+                    globalEmail = res.account.email;
+                    globalPass = res.account.pass;
+                    globalFullText = `✨ ขอบคุณที่อุดหนุนนะคะ ✨\n🛍️ แอป: ${res.account.appName} (${res.account.days} วัน)\n✉️ อีเมล: ${res.account.email}\n🔑 รหัสผ่าน: ${res.account.pass}\n🚀 ลิงก์ใช้งาน: ${res.account.link}`;
+                    
+                    document.getElementById('accData').innerText = globalFullText;
+                    document.getElementById('successLinkBtn').href = res.account.link;
+                    window.scrollTo(0, 0);
+                } else {
+                    alert("❌ " + res.message);
+                    document.getElementById('shopArea').style.display = 'block';
+                    loadProducts();
+                }
+            });
+        }
+
+        function backToShop() {
+            document.getElementById('successScreen').style.display = 'none';
+            document.getElementById('userPanel').style.display = 'block';
+            document.getElementById('shopArea').style.display = 'block';
+            loadProducts();
+            window.scrollTo(0, 0);
+        }
+
+        function openHistory() {
+            document.getElementById('shopArea').style.display = 'none';
+            document.getElementById('historyArea').style.display = 'block';
+            
+            callAPI("getHistory", { code: currentCode }, function(res) {
+                const list = document.getElementById('historyList');
+                if(!res.history || res.history.length === 0) {
+                    list.innerHTML = "<p style='color: #6b7280;'>ยังไม่มีประวัติการเบิกของค่ะซิส</p>";
+                    return;
+                }
+                list.innerHTML = "";
+                res.history.forEach((h, index) => {
+                    const boxId = 'history-item-' + index;
+                    const textToCopy = `✨ ขอบคุณที่อุดหนุนนะคะ ✨\n🛍️ แอป: ${h.appName}\n✉️ อีเมล: ${h.email}\n🔑 รหัสผ่าน: ${h.pass}\n🚀 ลิงก์ใช้งาน: ${h.link}`;
+                    
+                    list.innerHTML += `
+                        <div class="credentials" id="${boxId}" style="margin-bottom: 12px;">
+                            <b>🛍️ ${h.appName}</b><br>
+                            ✉️ อีเมล: ${h.email}<br>
+                            🔑 รหัสผ่าน: ${h.pass}<br>
+                            🚀 ลิงก์: ${h.link}
+                            
+                            <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                                <button class="btn-copy-email" onclick="copyTextDirect('${h.email}', 'คัดลอกอีเมลสำเร็จ!')">📧 ก๊อปปี้อีเมล</button>
+                                <button class="btn-copy-pass" onclick="copyTextDirect('${h.pass}', 'คัดลอกรหัสผ่านสำเร็จ!')">🔑 ก๊อปปี้รหัส</button>
+                            </div>
+                            <button class="btn-copy-all" onclick="copyTextDirect(\`${textToCopy}\`, 'คัดลอกข้อความทั้งหมดสำเร็จ!')">📋 ก๊อปปี้ข้อความทั้งหมด</button>
+                            
+                            <a href="${h.link}" target="_blank" class="btn-link-action">🔗 คลิกเปิดลิงก์นี้</a>
+                            <button class="btn-delete" onclick="document.getElementById('${boxId}').style.display='none'">🗑️ ซ่อนรายการนี้</button>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function closeHistory() {
+            document.getElementById('historyArea').style.display = 'none';
+            document.getElementById('shopArea').style.display = 'block';
+        }
+
+        function copyTextDirect(text, alertMsg) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("✅ " + alertMsg);
+            }).catch(err => {
+                prompt("คัดลอกข้อความด้านล่างนี้ได้เลยค่ะ:", text);
+            });
+        }
+    </script>
+</body>
+</html>

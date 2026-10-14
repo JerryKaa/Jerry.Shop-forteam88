@@ -1,0 +1,20 @@
+{
+  "name": "Jerry.Shop88 โกดังเบิกของ",
+  "short_name": "Jerry.Shop88",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fcf5fc",
+  "theme_color": "#86198f",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/rfH14RGp/IMG-256905021844533.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.ibb.co/rfH14RGp/IMG-256905021844533.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

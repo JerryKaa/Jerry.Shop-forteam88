@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚙️ หลังบ้านจัดการแอดมิน Jerry.Shop88</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f3f4f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h1 { color: #be185d; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #374151; }
+        input { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box; }
+        button { background-color: #ec4899; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 10px; text-align: left; }
+        th { background-color: #fdf2f8; color: #be185d; }
+        .btn-del { background-color: #ef4444; padding: 6px 12px; width: auto; font-size: 13px; }
+        #adminPanel { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚙️ หลังบ้าน Jerry.Shop88</h1>
+
+        <div id="adminLoginBox">
+            <p style="text-align: center; color: #6b7280;">กรุณาใส่รหัสผ่านแอดมินเพื่อเข้าสู่ระบบจัดการ</p>
+            <div class="form-group">
+                <label>🔑 รหัสผ่านแอดมิน (Admin Password):</label>
+                <input type="password" id="adminPassInput" placeholder="พิมพ์รหัสผ่านลับของคุณบอส" autocomplete="off">
+            </div>
+            <button onclick="loginAdmin()">🚀 เข้าสู่ระบบหลังบ้าน</button>
+        </div>
+
+        <div id="adminPanel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #059669;">✅ เข้าสู่ระบบแอดมินสำเร็จ</h3>
+                <button onclick="location.reload()" style="background-color: #6b7280; width: auto; padding: 6px 12px; font-size: 13px;">🔒 ออกจากระบบ</button>
+            </div>
+
+            <div class="form-group">
+                <label>🔐 รหัสพนักงานใหม่ (Code):</label>
+                <input type="text" id="newCode" placeholder="เช่น NewStaff99@">
+            </div>
+            <div class="form-group">
+                <label>👤 ชื่อพนักงาน / ชื่อเล่น (Name):</label>
+                <input type="text" id="newName" placeholder="เช่น แอดมินน้องฟ้า">
+            </div>
+            <button onclick="addUser()">➕ เพิ่มพนักงานใหม่เข้า Google Sheet</button>
+
+            <h2>📋 รายชื่อพนักงานปัจจุบัน</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>รหัสพนักงาน</th>
+                        <th>ชื่อพนักงาน</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <tr><td colspan="3" style="text-align: center;">กำลังโหลดข้อมูล...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbySLdJHFtF9u9hPkC-vd3VXrv0beeFH3CwOqYzDOCHOKO0bByld5Batixz5MOAPzr4JPw/exec";
+
+        function loginAdmin() {
+            const pass = document.getElementById('adminPassInput').value.trim();
+            if(!pass) return alert("กรุณาใส่รหัสผ่านก่อนค่ะ!");
+
+            // ส่งรหัสไปเช็คที่หลังบ้าน Apps Script ปลอดภัย 100% ไม่หลุดในโค้ดหน้าเว็บ
+            fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "verifyAdmin", pass: pass })
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.success) {
+                    document.getElementById('adminLoginBox').style.display = 'none';
+                    document.getElementById('adminPanel').style.display = 'block';
+                    loadUsers();
+                } else {
+                    alert("❌ รหัสผ่านแอดมินไม่ถูกต้องค่ะบอส!");
+                }
+            });
+        }
+
+        function loadUsers() {
+            fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "getUsers" })
+            })
+            .then(res => res.json())
+            .then(res => {
+                const tbody = document.getElementById('userTableBody');
+                tbody.innerHTML = "";
+                if(res.users.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align: center;">ยังไม่มีข้อมูลพนักงาน</td></tr>`;
+                    return;
+                }
+                res.users.forEach(u => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><b>${u.code}</b></td>
+                            <td>${u.name}</td>
+                            <td><button class="btn-del" onclick="deleteUser('${u.code}')">🗑️ ลบ</button></td>
+                        </tr>
+                    `;
+                });
+            });
+        }
+
+        function addUser() {
+            const code = document.getElementById('newCode').value.trim();
+            const name = document.getElementById('newName').value.trim();
+            if(!code || !name) return alert("กรุณากรอกข้อมูลให้ครบถ้วนค่ะ!");
+
+            fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "addUser", code: code, name: name })
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.success) {
+                    alert("✅ เพิ่มพนักงานสำเร็จ!");
+                    document.getElementById('newCode').value = "";
+                    document.getElementById('newName').value = "";
+                    loadUsers();
+                } else {
+                    alert("❌ เพิ่มไม่สำเร็จ: " + res.message);
+                }
+            });
+        }
+
+        function deleteUser(code) {
+            if(!confirm(`ยืนยันการลบรหัสพนักงาน "${code}" ออกจากระบบใช่ไหมคะ?`)) return;
+
+            fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "deleteUser", code: code })
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.success) {
+                    alert("🗑️ ลบพนักงานเรียบร้อย!");
+                    loadUsers();
+                } else {
+                    alert("❌ ลบไม่สำเร็จ");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
